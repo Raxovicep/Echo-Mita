@@ -27,6 +27,7 @@ First, install ther dependencies for required for Echo Mita to work.
 ## Commands
 
 ## Contributing
+Feel free to contribute the project. Write issues, bug reports, ideas, etc. Follow the convention to contribute the project, [CONTRIBUTING](CONTRIBUTING.md). 
 
 ## Support the author
 
