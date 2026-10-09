@@ -53,7 +53,9 @@ int main(int argc, char **argv) {
     cmd_append(&cmd, SRC_FOLDER "parser-json/parser.c");
     cmd_append(&cmd, SRC_FOLDER "speech/speech_recognition.c");
     cmd_append(&cmd, "-o", BUILD_FOLDER "Mita");
-    cmd_append(&cmd, "-ldl", "-lpthread", "-lvosk", "-ljson-c", "-lm", "-lraylib");
+    cmd_append(&cmd, "-ldl", "-lpthread", "-ljson-c", "-lm");
+    cmd_append(&cmd, "-lvosk");
+    cmd_append(&cmd, "-lraylib");
 
     if (dev) {
       cmd_append(&cmd, "-ggdb");
