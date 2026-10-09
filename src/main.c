@@ -104,6 +104,7 @@ int main(int argc, char *argv[]) {
         start_capture(capture);
         free(result);
       }
+      free(result);
     }
     BeginDrawing();
     ClearBackground(RED);
