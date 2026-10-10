@@ -132,11 +132,10 @@ static void usage(FILE *stream) {
 
 int main(int argc, char **argv) {
   bool *help = flag_bool("help", false, "Prints the help to stdout and exit with 0");
-  bool dev      = false;
   bool run      = false;
   bool no_build = false;
 
-  flag_bool_var(&dev, "dev", false, "Compile to dev mode");
+  flag_bool_var(&dev, "dev", false, "Compile in dev mode");
   flag_bool_var(&run, "run", false, "Run the program");
   flag_bool_var(&no_build, "no-build", false, "Do not build a program");
 
@@ -151,38 +150,11 @@ int main(int argc, char **argv) {
     return 0;
   }
   
-  char output_file_path[] = BUILD_FOLDER"Mita";
-
   GO_REBUILD_URSELF(argc, argv);
-  if (!no_build) {
-    cc();
-    cmd_append(&cmd, SRC_FOLDER "main.c");
-    cmd_append(&cmd, SRC_FOLDER "audio/audio_capture.c");
-    cmd_append(&cmd, SRC_FOLDER "audio/audio_playback.c");
-    cmd_append(&cmd, SRC_FOLDER "parser-json/parser.c");
-    cmd_append(&cmd, SRC_FOLDER "speech/speech_recognition.c");
-    cmd_append(&cmd, "-o", BUILD_FOLDER "Mita");
-    cmd_append(&cmd, "-ldl", "-lpthread", "-ljson-c", "-lm");
-    cmd_append(&cmd, "-lvosk");
-    cmd_append(&cmd, "-lraylib");
-
-    if (dev) {
-      cmd_append(&cmd, "-ggdb");
-      cmd_append(&cmd, "-fsanitize=address");
-      cmd_append(&cmd, "-fsanitize=undefined");
-      cmd_append(&cmd, "-fno-sanitize-recover=all");
-      cmd_append(&cmd, "-fsanitize=float-divide-by-zero");
-      cmd_append(&cmd, "-fsanitize=float-cast-overflow"); 
-      cmd_append(&cmd, "-fno-sanitize=null");
-      cmd_append(&cmd, "-fno-sanitize=alignment");
-    } else {
-      cmd_append(&cmd, "-O2");
-      cmd_append(&cmd, "-march=native");
-    }
-    if (!cmd_run(&cmd)) return 1;
-  }
+  if (!no_build && !build()) return 1;
   if (run) {
-    cmd_append(&cmd, temp_sprintf("./%s", output_file_path));
+    Cmd cmd = {0};
+    cmd_append(&cmd, "./"BUILD_FOLDER"Mita");
     if (!cmd_run(&cmd)) return 2;
   }
   return 0;
