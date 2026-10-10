@@ -18,9 +18,15 @@ It is built with a **fully modular architecture**, allowing developers to custom
 The project focuses on **extensibility, simplicity, and control**, enabling users to adapt Mita to different environments and use cases without being limited by a fixed design.
 
 ## Quick start
-First, install ther dependencies for required for Echo Mita to work.
+We are using the `nob` build system. Before using nob you need to bootstrap it. Just compile it with the avalible C compiler.
 ```bash
+cc -o nob nob.c # ONLY ONCE!
+./nob
+./build/Mita
+# or
+./nob -no-build -run
 ```
+The nob has own flags. To check it, just run `./nob -help`.
 
 ## Project Wiki
 
