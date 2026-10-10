@@ -8,7 +8,9 @@
 #define SRC_FOLDER "src/"
 #define BUILD_FOLDER "build/"
 
-Cmd cmd = {0};
+#include <errno.h>
+#include <stdbool.h>
+#include <sys/stat.h>
 
 void cc(void) {
   cmd_append(&cmd, "gcc");
