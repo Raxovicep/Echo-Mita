@@ -86,8 +86,46 @@ static bool comile_source(const Source *source) {
   return cmd_run(&cmd);
 }
 
-void usage(FILE *stream) {
-  fprintf(stream, "Usage: ./nob [OPTIONS] [--] [ARGS]]n");
+static bool link_program(void) {
+  Cmd cmd = {0};
+
+  cc(&cmd);
+  add_dev_flags(&cmd);
+
+  for (size_t i = 0; i < sources_count; ++i) {
+    cmd_append(&cmd, sources[i].obj);
+  }
+
+  cmd_append(&cmd, "-o", BUILD_FOLDER "Mita");
+  cmd_append(&cmd, "-ldl", "-lpthread", "-ljson-c", "-lm");
+  cmd_append(&cmd, "-lvosk", "-lraylib");
+
+  nob_log(INFO, "LINK %sMita\n", BUILD_FOLDER);
+  return cmd_run(&cmd);
+}
+
+static bool build(void) {
+  if (!ensure_directory("build")) return false;
+  bool changed = false;
+
+  for (size_t i = 0; i < sources_count; ++i) {
+    const Source *source = &sources[i];
+    if (!is_need_rebuild(source->src, source->obj)) continue;
+    if (!comile_source(source)) return false;
+    changed = true;
+  }
+  struct stat exe_stat;
+  bool is_exec_missing = stat(BUILD_FOLDER"Mita", &exe_stat) != 0;
+  if (changed || is_exec_missing) {
+    if (!link_program()) return false;
+  } else {
+    nob_log(INFO, "Nothing to rebuild.");
+  }
+  return true;
+}
+
+static void usage(FILE *stream) {
+  fprintf(stream, "Usage: ./nob [OPTIONS] [--] [ARGS]\n");
   fprintf(stream, "OPTIONS:\n");
   flag_print_options(stream);
 } 
