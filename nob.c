@@ -12,9 +12,78 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
-void cc(void) {
-  cmd_append(&cmd, "gcc");
-  cmd_append(&cmd, "-Wall", "-Wextra", "-pedantic");
+typedef struct{
+  const char *src;
+  const char *obj;
+} Source;
+
+static const Source sources[] =  {
+  {SRC_FOLDER"main.c", BUILD_FOLDER"main.o"},
+  {SRC_FOLDER"audio/audio_capture.c", BUILD_FOLDER"audio_capture.o"},
+  {SRC_FOLDER"audio/audio_playback.c", BUILD_FOLDER"audio_playback.o"},
+  {SRC_FOLDER"parser-json/parser.c", BUILD_FOLDER"parser.o"},
+  {SRC_FOLDER"speech/speech_recognition.c", BUILD_FOLDER"speech_recognition.o"},
+};
+
+static const size_t sources_count = sizeof(sources) / sizeof(sources[0]);
+
+static bool dev = false;
+
+void cc(Cmd *cmd) {
+  cmd_append(cmd, "gcc");
+  cmd_append(cmd, "-Wall", "-Wextra", "-pedantic");
+}
+
+static void add_dev_flags(Cmd *cmd)
+{
+  if (dev) {
+    cmd_append(cmd, "-ggdb");
+    cmd_append(cmd, "-fsanitize=address");
+    cmd_append(cmd, "-fsanitize=undefined");
+    cmd_append(cmd, "-fno-sanitize-recover=all");
+    cmd_append(cmd, "-fsanitize=float-divide-by-zero");
+    cmd_append(cmd, "-fsanitize=float-cast-overflow");
+    cmd_append(cmd, "-fno-sanitize=null");
+    cmd_append(cmd, "-fno-sanitize=alignment");
+  } else {
+    cmd_append(cmd, "-O2");
+    cmd_append(cmd, "-march=native");
+  }
+}
+
+static bool ensure_directory(const char *path)
+{
+  if (mkdir(path, 0755) == 0 || errno == EEXIST) {
+    struct stat st;
+    return stat(path, &st) == 0 && S_ISDIR(st.st_mode);
+  }
+
+  return false;
+}
+
+static bool is_need_rebuild(const char *src, const char *obj) {
+  struct stat src_stat;
+  struct stat obj_stat;
+
+  if (stat(src, &src_stat) != 0)
+    return true;
+
+  if (stat(obj, &obj_stat) != 0)
+    return true;
+
+  return src_stat.st_mtime > obj_stat.st_mtime;
+}
+
+static bool comile_source(const Source *source) {
+  Cmd cmd = {0};
+  cc(&cmd);
+  add_dev_flags(&cmd);
+
+  cmd_append(&cmd, "-MMD", "-MP");
+  cmd_append(&cmd, "-c", source->src);
+  cmd_append(&cmd, "-o", source->obj);
+
+  return cmd_run(&cmd);
 }
 
 void usage(FILE *stream) {
