@@ -17,6 +17,9 @@ It is built with a **fully modular architecture**, allowing developers to custom
 
 The project focuses on **extensibility, simplicity, and control**, enabling users to adapt Mita to different environments and use cases without being limited by a fixed design.
 
+## Extarnal dependencies
+All dependencies are included in the `ext/` directory. 
+
 ## Quick start
 We are using the `nob` build system. Before using nob you need to bootstrap it. Just compile it with the avalible C compiler.
 ```bash
