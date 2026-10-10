@@ -1,6 +1,6 @@
 # To compile C's files to static library in the nob
 
-- STATUS: OPEN
+- STATUS: CLOSED 
 - PRIORITY: 100
 - TAGS: performance
 
