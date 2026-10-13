@@ -53,7 +53,7 @@ static void add_dev_flags(Cmd *cmd)
 
 static bool ensure_directory(const char *path)
 {
-  if (mkdir(path, 0755) == 0 || errno == EEXIST) {
+  if (mkdir_if_not_exists(path)) {
     struct stat st;
     return stat(path, &st) == 0 && S_ISDIR(st.st_mode);
   }
