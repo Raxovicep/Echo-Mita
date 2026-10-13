@@ -74,7 +74,7 @@ static bool is_need_rebuild(const char *src, const char *obj) {
   return src_stat.st_mtime > obj_stat.st_mtime;
 }
 
-static bool comile_source(const Source *source) {
+static bool compile_source(const Source *source) {
   Cmd cmd = {0};
   cc(&cmd);
   add_dev_flags(&cmd);
@@ -111,7 +111,7 @@ static bool build(void) {
   for (size_t i = 0; i < sources_count; ++i) {
     const Source *source = &sources[i];
     if (!is_need_rebuild(source->src, source->obj)) continue;
-    if (!comile_source(source)) return false;
+    if (!compile_source(source)) return false;
     changed = true;
   }
   struct stat exe_stat;
