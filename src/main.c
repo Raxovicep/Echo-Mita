@@ -7,6 +7,8 @@
 #include <raylib.h>
 #include <stdio.h>
 
+#define NOB_IMPLEMENTATION
+#include "../ext/nob.h"
 #define SAMPLE_RATE 16000
 
 #define ERROR_Tmp "ERROR: could not"
@@ -52,7 +54,7 @@ int main(int argc, char *argv[]) {
   SpeechContext *speech_ctx = create_speech(model_path, SAMPLE_RATE);
 
   if (speech_ctx == NULL) {
-    fprintf(stderr, ERROR_Tmp " load model or recognizer not initialized.\n");
+    nob_log(ERROR, "could not load model or recognizer not initialized.\n");
     return -1;
   }
 
@@ -60,8 +62,7 @@ int main(int argc, char *argv[]) {
       create_capture(ma_format_s16, 1, SAMPLE_RATE, data_callback, speech_ctx);
 
   if (capture->status != MA_SUCCESS) {
-    fprintf(stderr, ERROR_Tmp " open capture device. Code: %i\n",
-            capture->status);
+    nob_log(ERROR, "could not open capture device. Code: %i\n", capture->status);
     delete_capture(capture);
     delete_speech(speech_ctx);
     return capture->status;
@@ -71,7 +72,7 @@ int main(int argc, char *argv[]) {
 
   if (playback->status != MA_SUCCESS) {
     retval = playback->status;
-    fprintf(stderr, ERROR_Tmp " open playback device. Code: %i\n", retval);
+    nob_log(ERROR, "open playback device. Code: %i\n", retval);
     goto unload;
   }
 
@@ -80,7 +81,7 @@ int main(int argc, char *argv[]) {
   start_capture(capture);
   if (capture->status != MA_SUCCESS) {
     retval = capture->status;
-    fprintf(stderr, ERROR_Tmp " start capture device. Code: %i\n", retval);
+    nob_log(ERROR, "could not start capture device. Code: %i\n", retval);
     goto unload;
   }
 
