@@ -25,6 +25,14 @@ typedef struct{
   const char *obj;
 } Source;
 
+static_assert(__compiler_count == 4, "Amount of compilers have changed");
+const char *compiler_names[__compiler_count] = {
+  [CC] = "cc",
+  [GCC] = "gcc",
+  [CLANG] = "clang",
+  [TCC] = "tcc",
+};
+
 static const Source sources[] =  {
   {SRC_FOLDER"main.c", BUILD_FOLDER"main.o"},
   {SRC_FOLDER"audio/audio_capture.c", BUILD_FOLDER"audio_capture.o"},
