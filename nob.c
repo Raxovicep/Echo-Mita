@@ -45,6 +45,16 @@ static const size_t sources_count = sizeof(sources) / sizeof(sources[0]);
 
 static bool dev = false;
 
+static bool compiler_by_name(const char *name, Compiler *compiler) {
+  for (int i = 0; i < __compiler_count; ++i) {
+    if (strcmp(name, compiler_names[i]) == 0) {
+      *compiler = i;
+      return true;
+    }
+  }
+  return false;
+}
+
 void cc(Cmd *cmd) {
   cmd_append(cmd, "gcc");
   cmd_append(cmd, "-Wall", "-Wextra", "-pedantic");
