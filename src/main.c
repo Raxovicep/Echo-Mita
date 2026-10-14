@@ -9,9 +9,8 @@
 
 #define NOB_IMPLEMENTATION
 #include "../ext/nob.h"
-#define SAMPLE_RATE 16000
 
-#define ERROR_Tmp "ERROR: could not"
+#define SAMPLE_RATE 16000
 
 void data_callback(ma_device *pDevice, void *pOutput, const void *pInput,
                    ma_uint32 frameCount) {
