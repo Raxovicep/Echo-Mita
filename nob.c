@@ -12,6 +12,14 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
+typedef enum {
+  CC,
+  GCC,
+  CLANG,
+  TCC,
+  __compiler_count
+} Compiler;
+
 typedef struct{
   const char *src;
   const char *obj;
