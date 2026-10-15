@@ -79,7 +79,6 @@ int main(int argc, char *argv[]) {
     goto unload;
   }
 
-  printf("Press Space to stop...");
   printf("Device name: %s\n", capture->device.capture.name);
   start_capture(capture);
   if (capture->status != MA_SUCCESS) {
