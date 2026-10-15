@@ -92,12 +92,11 @@ int main(int argc, char *argv[]) {
   while (!WindowShouldClose()) {
     if (speech_ctx->has_result) {
       speech_ctx->has_result = 0;
-      char *result = parse_json(speech_ctx->text);
-      if (strcmp(result, "привет") == 0) {
+      char *result           = parse_json(speech_ctx->text);
+      if (result != NULL && strcmp(result, "привет") == 0) {
         stop_capture(capture);
         start_playback(playback, argv[1]);
         start_capture(capture);
-        free(result);
       }
       free(result);
     }
