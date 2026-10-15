@@ -49,8 +49,11 @@ void playback_callback(ma_device *device, void *output, const void *input,
 int main(int argc, char *argv[]) {
   InitWindow(800, 600, "Mita");
   char *model_path = "resources/model";
-  int retval = 0;
-
+  int retval       = 0;
+  if (argc < 2) {
+    nob_log(ERROR, "You don't provide file to play sound");
+    return retval = -2;
+  }
   SpeechContext *speech_ctx = create_speech(model_path, SAMPLE_RATE);
 
   if (speech_ctx == NULL) {
