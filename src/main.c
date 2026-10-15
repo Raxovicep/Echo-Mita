@@ -47,7 +47,6 @@ void playback_callback(ma_device *device, void *output, const void *input,
 }
 
 int main(int argc, char *argv[]) {
-  InitWindow(800, 600, "Mita");
   char *model_path = "resources/model";
   int retval       = 0;
   if (argc < 2) {
@@ -89,6 +88,7 @@ int main(int argc, char *argv[]) {
     goto unload;
   }
 
+  InitWindow(800, 600, "Mita");
   while (!WindowShouldClose()) {
     if (speech_ctx->has_result) {
       speech_ctx->has_result = 0;
