@@ -1,5 +1,3 @@
-#include <string.h>
-#define MINIAUDIO_IMPLEMENTATION
 #include "audio/audio_capture.h"
 #include "audio/audio_playback.h"
 #include "parser-json/parser.h"
