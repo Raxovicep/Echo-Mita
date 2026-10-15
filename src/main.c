@@ -22,7 +22,7 @@ void data_callback(ma_device *pDevice, void *pOutput, const void *pInput,
   if (speech_process_audio(rec, pInput, bytes)) {
     strncpy(rec->text, speech_get_result(rec), MAX_TEXT - 1);
     rec->text[MAX_TEXT - 1] = '\0';
-    rec->has_result = 1;
+    rec->has_result         = 1;
   }
   // else {
   // printf("%s\n", speech_get_partial(rec));
@@ -65,7 +65,8 @@ int main(int argc, char *argv[]) {
       create_capture(ma_format_s16, 1, SAMPLE_RATE, data_callback, speech_ctx);
 
   if (capture->status != MA_SUCCESS) {
-    nob_log(ERROR, "could not open capture device. Code: %i\n", capture->status);
+    nob_log(ERROR, "could not open capture device. Code: %i\n",
+            capture->status);
     delete_capture(capture);
     delete_speech(speech_ctx);
     return capture->status;
