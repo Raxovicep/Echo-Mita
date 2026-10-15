@@ -4,6 +4,8 @@
 #include "speech/speech_recognition.h"
 #include <raylib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define NOB_IMPLEMENTATION
 #include "../ext/nob.h"
