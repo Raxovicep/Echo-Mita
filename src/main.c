@@ -16,7 +16,8 @@ void data_callback(ma_device *pDevice, void *pOutput, const void *pInput,
                    ma_uint32 frameCount) {
   SpeechContext *rec = (SpeechContext *)pDevice->pUserData;
   // 16-bit mono → 2 bytes per frame
-  int bytes = frameCount * 2;
+  if (frameCount > INT_MAX / sizeof(ma_int16)) return;
+  int bytes = (int)(frameCount * sizeof(ma_int16));
 
   if (speech_process_audio(rec, pInput, bytes)) {
     strncpy(rec->text, speech_get_result(rec), MAX_TEXT - 1);
