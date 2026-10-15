@@ -16,3 +16,4 @@ Here's how I want to build my project
   - -run - run an executable
     - After -run user should provide some arguments for executable
       - `./nob -no-build -run resources/Voice.wav`
+  - flag `-force` to force rebuild
