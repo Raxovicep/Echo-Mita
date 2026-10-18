@@ -328,6 +328,10 @@ bool link_program(Compiler compiler) {
 
 bool build(Compiler compiler, bool is_force) {
   printf("==========STAGE 1==========\n");
+  if (!make_build_h(compiler))
+    nob_log(WARNING, "Could not create a build.h file");
+  printf("===========================\n");
+  printf("==========STAGE 2==========\n");
   if (!ensure_directory("build")) return false;
   bool changed = false;
 
@@ -353,11 +357,6 @@ bool build(Compiler compiler, bool is_force) {
   } else {
     nob_log(INFO, "Nothing to rebuild.");
   }
-  printf("===========================\n");
-
-  printf("==========STAGE 2==========\n");
-  if (!make_build_h(compiler))
-    nob_log(WARNING, "Could not create a build.h file");
   printf("===========================\n");
   return true;
 }
