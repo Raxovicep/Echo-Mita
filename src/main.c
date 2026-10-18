@@ -1,6 +1,5 @@
 #include "../build/build.h"
-#include "core/audio/audio_capture.h"
-#include "core/audio/audio_playback.h"
+#include "core/audio/audio.h"
 #include "core/parser-json/parser.h"
 #include "core/speech/speech_recognition.h"
 #include <raylib.h>
@@ -34,7 +33,7 @@ void data_callback(ma_device *pDevice, void *pOutput, const void *pInput,
 
 void playback_callback(ma_device *device, void *output, const void *input,
                        ma_uint32 frameCount) {
-  AudioPlayback *ctx = (AudioPlayback *)device->pUserData;
+  Audio *ctx = (Audio *)device->pUserData;
 
   if (ctx->has_decoder) {
     ma_decoder_read_pcm_frames(&ctx->decoder, output, frameCount, NULL);
@@ -61,27 +60,28 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  AudioCapture *capture =
-      create_capture(ma_format_s16, 1, SAMPLE_RATE, data_callback, speech_ctx);
+  Audio *capture = create_device(ma_device_type_capture, ma_format_s16, 1,
+                                 SAMPLE_RATE, data_callback, speech_ctx);
 
   if (capture->status != MA_SUCCESS) {
     nob_log(ERROR, "could not open capture device. Code: %i\n",
             capture->status);
-    delete_capture(capture);
+    delete_device(capture);
     delete_speech(speech_ctx);
     return capture->status;
   }
   // Create an audio playback with native setting
-  AudioPlayback *playback = create_playback(0, 0, 0, playback_callback);
+  Audio *playback =
+      create_device(ma_device_type_playback, 0, 0, 0, playback_callback, NULL);
 
   if (playback->status != MA_SUCCESS) {
     retval = playback->status;
-    nob_log(ERROR, "open playback device. Code: %i\n", retval);
+    nob_log(ERROR, "could not open playback device. Code: %i\n", retval);
     goto unload;
   }
 
   printf("Device name: %s\n", capture->device.capture.name);
-  start_capture(capture);
+  start_device(capture, NULL);
   if (capture->status != MA_SUCCESS) {
     retval = capture->status;
     nob_log(ERROR, "could not start capture device. Code: %i\n", retval);
@@ -94,9 +94,9 @@ int main(int argc, char *argv[]) {
       speech_ctx->has_result = 0;
       char *result           = parse_json(speech_ctx->text);
       if (result != NULL && strcmp(result, "привет") == 0) {
-        stop_capture(capture);
-        start_playback(playback, argv[1]);
-        start_capture(capture);
+        stop_device(capture);
+        start_device(playback, argv[1]);
+        start_device(capture, NULL);
       }
       free(result);
     }
@@ -115,8 +115,8 @@ int main(int argc, char *argv[]) {
   }
   retval = 0;
 unload:
-  delete_capture(capture);
-  delete_playback(playback);
+  delete_device(capture);
+  delete_device(playback);
   delete_speech(speech_ctx);
   CloseWindow();
   return retval;
