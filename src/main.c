@@ -1,7 +1,8 @@
-#include "audio/audio_capture.h"
-#include "audio/audio_playback.h"
-#include "parser-json/parser.h"
-#include "speech/speech_recognition.h"
+#include "../build/build.h"
+#include "core/audio/audio_capture.h"
+#include "core/audio/audio_playback.h"
+#include "core/parser-json/parser.h"
+#include "core/speech/speech_recognition.h"
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -101,6 +102,15 @@ int main(int argc, char *argv[]) {
     }
     BeginDrawing();
     ClearBackground(RED);
+#ifdef GIT_HASH
+    DrawText(GIT_HASH, 25, 15, 20, GREEN);
+#endif
+#ifdef COMPILER_VERSION
+    DrawText(COMPILER_VERSION, 25, 35, 20, GREEN);
+#endif
+#ifdef BUILD_TIME
+    DrawText(BUILD_TIME, 25, 55, 20, GREEN);
+#endif
     EndDrawing();
   }
   retval = 0;
