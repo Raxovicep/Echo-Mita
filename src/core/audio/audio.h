@@ -1,12 +1,14 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include "miniaudio.h"
+#include "../../../ext/miniaudio.h"
 
 typedef struct {
   ma_device device;
   ma_decoder decoder;
+  // TODO: use bit flags
   int status;
+  int has_decoder;
 } Audio;
 
 Audio *create_device(ma_device_type type, ma_format format,
