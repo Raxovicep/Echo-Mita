@@ -31,12 +31,11 @@ const char *compiler_names[__compiler_count] = {
 };
 
 const Source sources[] = {
-    {SRC_FOLDER "main.c", BUILD_FOLDER "main.o"},
-    {SRC_FOLDER "audio/audio_capture.c", BUILD_FOLDER "audio_capture.o"},
-    {SRC_FOLDER "audio/audio_playback.c", BUILD_FOLDER "audio_playback.o"},
-    {SRC_FOLDER "parser-json/parser.c", BUILD_FOLDER "parser.o"},
-    {SRC_FOLDER "speech/speech_recognition.c",
+    {SRC_FOLDER "core/audio/audio.c", BUILD_FOLDER "audio.o"},
+    {SRC_FOLDER "core/parser-json/parser.c", BUILD_FOLDER "parser.o"},
+    {SRC_FOLDER "core/speech/speech_recognition.c",
      BUILD_FOLDER "speech_recognition.o"},
+    {SRC_FOLDER "main.c", BUILD_FOLDER "main.o"},
 };
 
 const Source stb_libs[] = {
