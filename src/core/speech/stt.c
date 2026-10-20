@@ -1,12 +1,11 @@
-#include "speech_recognition.h"
+#include "stt.h"
 #include <stdlib.h>
 #include <vosk_api.h>
 
 SpeechContext *create_speech(const char *model_path, int sample_rate) {
   // Allocate memory for context
   SpeechContext *ctx = malloc(sizeof(SpeechContext));
-  if (ctx == NULL)
-    return NULL;
+  if (ctx == NULL) return NULL;
 
   // Load model
   ctx->model = vosk_model_new(model_path);
@@ -23,7 +22,7 @@ SpeechContext *create_speech(const char *model_path, int sample_rate) {
     return NULL;
   }
 
-  ctx->text[0] = '\0';
+  ctx->text[0]    = '\0';
   ctx->has_result = 0;
 
   return ctx;

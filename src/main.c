@@ -1,7 +1,7 @@
 #include "../build/build.h"
 #include "core/audio/audio.h"
 #include "core/parser-json/parser.h"
-#include "core/speech/speech_recognition.h"
+#include "core/speech/stt.h"
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>

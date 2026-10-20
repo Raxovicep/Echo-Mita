@@ -1,5 +1,5 @@
-#ifndef SPEECH_RECOGNITION
-#define SPEECH_RECOGNITION
+#ifndef STT_H
+#define STT_H
 
 #include <vosk_api.h>
 
@@ -21,4 +21,4 @@ const char *speech_get_result(SpeechContext *ctx);
 const char *speech_get_partial(SpeechContext *ctx);
 void delete_speech(SpeechContext *ctx);
 
-#endif // SPEECH_RECOGNITION
+#endif // STT_H

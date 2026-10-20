@@ -33,8 +33,7 @@ const char *compiler_names[__compiler_count] = {
 const Source sources[] = {
     {SRC_FOLDER "core/audio/audio.c", BUILD_FOLDER "audio.o"},
     {SRC_FOLDER "core/parser-json/parser.c", BUILD_FOLDER "parser.o"},
-    {SRC_FOLDER "core/speech/speech_recognition.c",
-     BUILD_FOLDER "speech_recognition.o"},
+    {SRC_FOLDER "core/speech/stt.c", BUILD_FOLDER "stt.o"},
     {SRC_FOLDER "main.c", BUILD_FOLDER "main.o"},
 };
 
