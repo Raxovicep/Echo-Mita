@@ -6,7 +6,7 @@
 
 /* Because of App is allocated at the stack in main() we can just set memory to
  * 0*/
-int init_app(App *app, const char *model_path, const char *sound_path) {
+int app_init(App *app, const char *model_path, const char *sound_path) {
   memset(app, 0, sizeof *app);
   app->sound_path = sound_path;
 
@@ -32,10 +32,10 @@ int init_app(App *app, const char *model_path, const char *sound_path) {
   }
   return 0;
 fail:
-  close_app(app);
+  app_close(app);
   return -1;
 }
-void update_app(App *app) {
+void app_update(App *app) {
   SpeechContext *s = app->speech;
   if (s->has_result) return;
   s->has_result = 0;
@@ -49,7 +49,7 @@ void update_app(App *app) {
   free(result);
 }
 
-void close_app(App *app) {
+void app_close(App *app) {
   if (app->capture) delete_device(app->capture);
   if (app->playback) delete_device(app->playback);
   if (app->speech) delete_device(app->speech);

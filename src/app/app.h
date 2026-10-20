@@ -11,8 +11,8 @@ typedef struct {
   Audio         *playback;
 } App;
 
-int init_app(App *app, const char *model_path, const char *sound_path);
-void update_app(App *app);
-void close_app(App *app);
+int app_init(App *app, const char *model_path, const char *sound_path);
+void app_update(App *app);
+void app_close(App *app);
 
 #endif // APP_H
