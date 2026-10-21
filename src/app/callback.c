@@ -2,8 +2,8 @@
 #include "core/speech/stt.h"
 #include <string.h>
 
-void data_callback(ma_device *pDevice, void *pOutput, const void *pInput,
-                   ma_uint32 frameCount) {
+void recog_call(ma_device *pDevice, void *pOutput, const void *pInput,
+                ma_uint32 frameCount) {
   SpeechContext *rec = (SpeechContext *)pDevice->pUserData;
   // 16-bit mono → 2 bytes per frame
   if (frameCount > INT_MAX / sizeof(ma_int16)) return;
@@ -21,8 +21,8 @@ void data_callback(ma_device *pDevice, void *pOutput, const void *pInput,
   (void)pOutput; // unused
 }
 
-void playback_callback(ma_device *device, void *output, const void *input,
-                       ma_uint32 frameCount) {
+void playback(ma_device *device, void *output, const void *input,
+              ma_uint32 frameCount) {
   Audio *ctx = (Audio *)device->pUserData;
 
   if (ctx->has_decoder) {
