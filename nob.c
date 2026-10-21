@@ -30,6 +30,9 @@ const char *compiler_names[__compiler_count] = {
     [TCC]   = "tcc",
 };
 
+const char *include_ext = "-I" EXT;
+const char *include_src = "-I" SRC_FOLDER;
+
 const Source sources[] = {
     {SRC_FOLDER "core/audio/audio.c", BUILD_FOLDER "audio.o"},
     {SRC_FOLDER "core/parser-json/parser.c", BUILD_FOLDER "parser.o"},
@@ -281,6 +284,9 @@ bool compile_source(const Source *source, Compiler compiler) {
   cc(&cmd, compiler);
   add_dev_flags(&cmd);
 
+  cmd_append(&cmd, include_ext);
+  cmd_append(&cmd, include_src);
+  cmd_append(&cmd, "-I" BUILD_FOLDER);
   cmd_append(&cmd, "-MMD", "-MP");
   cmd_append(&cmd, "-c", source->src);
   cmd_append(&cmd, "-o", source->obj);
