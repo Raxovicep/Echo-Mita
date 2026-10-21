@@ -1,6 +1,6 @@
 #include "app.h"
 #include "callback.h"
-#include "core/parser_json/parser.h"
+#include "core/parser-json/parser.h"
 #include "nob.h"
 #include <string.h>
 
