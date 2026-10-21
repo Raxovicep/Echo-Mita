@@ -45,7 +45,7 @@ fail:
 }
 void app_update(App *app) {
   SpeechContext *s = app->speech;
-  if (s->has_result) return;
+  if (!s->has_result) return;
   s->has_result = 0;
 
   char *result = parse_json(s->text);
