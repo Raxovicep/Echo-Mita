@@ -32,6 +32,12 @@ int app_init(App *app, const char *model_path, const char *sound_path) {
             app->playback->status);
     goto fail;
   }
+  start_device(app->capture, NULL);
+  if (app->capture->status != MA_SUCCESS) {
+    nob_log(NOB_ERROR, "could not start capture device. Code: %i",
+            app->capture->status);
+    goto fail;
+  }
   return 0;
 fail:
   app_close(app);
