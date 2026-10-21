@@ -1,5 +1,8 @@
 #include "callback.h"
+#include "core/audio/audio.h"
 #include "core/speech/stt.h"
+#include "nob.h"
+#include <limits.h>
 #include <string.h>
 
 void recog_call(ma_device *pDevice, void *pOutput, const void *pInput,
