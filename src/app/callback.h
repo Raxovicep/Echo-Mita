@@ -3,7 +3,7 @@
 
 #include "miniaudio.h"
 
-void data_callback(ma_device *pDevice, void *pOutput, const void *pInput ma_uint32 frameCount);
-void playback_callback(ma_device *pDevice, void *pOutput, const void *pInput ma_uint32 frameCount);
+void recog_call(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount);
+void playback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount);
 
 #endif // CALLBACK_H
