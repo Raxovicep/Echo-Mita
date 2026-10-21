@@ -1,4 +1,5 @@
 #include "gui.h"
+#include "build.h"
 #include <raylib.h>
 
 void gui_init(void) { InitWindow(800, 600, "Mita"); }
