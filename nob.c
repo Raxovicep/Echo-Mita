@@ -34,6 +34,9 @@ const Source sources[] = {
     {SRC_FOLDER "core/audio/audio.c", BUILD_FOLDER "audio.o"},
     {SRC_FOLDER "core/parser-json/parser.c", BUILD_FOLDER "parser.o"},
     {SRC_FOLDER "core/speech/stt.c", BUILD_FOLDER "stt.o"},
+    {SRC_FOLDER "app/app.c", BUILD_FOLDER "app.o"},
+    {SRC_FOLDER "app/callback.c", BUILD_FOLDER "callback.o"},
+    {SRC_FOLDER "gui/gui.c", BUILD_FOLDER "gui.o"},
     {SRC_FOLDER "main.c", BUILD_FOLDER "main.o"},
 };
 
