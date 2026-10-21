@@ -20,7 +20,7 @@ int app_init(App *app, const char *model_path, const char *sound_path) {
 
   app->capture = create_device(ma_device_type_capture, ma_format_s16, 1,
                                SAMPLE_RATE, recog_call, app->speech);
-  if (app->capture != MA_SUCCESS) {
+  if (app->capture->status != MA_SUCCESS) {
     nob_log(NOB_ERROR, "could not open capture device. Code: %i.",
             app->capture->status);
     goto fail;
