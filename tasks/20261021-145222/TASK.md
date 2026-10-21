@@ -14,4 +14,5 @@ Here's the list:
 I need a deep learing to it.
 
 I like this consept of a memory. [Memory module](https://www.youtube.com/watch?v=1up_98x1pd8)
+For TTS module I can use this project. [Pocket-TTS](https://github.com/kyutai-labs/pocket-tts)
 
