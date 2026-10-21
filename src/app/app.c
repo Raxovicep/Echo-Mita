@@ -50,9 +50,9 @@ void app_update(App *app) {
 
   char *result = parse_json(s->text);
   if (result && strcmp(result, "привет") == 0) {
-    stop_device(capture);
-    start_device(playback, app->sound_path);
-    start_device(capture, NULL);
+    stop_device(app->capture);
+    start_device(app->playback, app->sound_path);
+    start_device(app->capture, NULL);
   }
   free(result);
 }
