@@ -60,6 +60,6 @@ void app_update(App *app) {
 void app_close(App *app) {
   if (app->capture) delete_device(app->capture);
   if (app->playback) delete_device(app->playback);
-  if (app->speech) delete_device(app->speech);
+  if (app->speech) delete_speech(app->speech);
   memset(app, 0, sizeof *app);
 }
