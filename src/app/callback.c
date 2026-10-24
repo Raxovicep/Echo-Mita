@@ -13,9 +13,11 @@ void recog_call(ma_device *pDevice, void *pOutput, const void *pInput,
   int bytes = (int)(frameCount * sizeof(ma_int16));
 
   if (speech_process_audio(rec, pInput, bytes)) {
-    strncpy(rec->text, speech_get_result(rec), MAX_TEXT - 1);
-    rec->text[MAX_TEXT - 1] = '\0';
-    rec->has_result         = 1;
+    if (atomic_load_explicit(&rec->has_result, memory_order_acquire) == 0) {
+      strncpy(rec->text, speech_get_result(rec), MAX_TEXT - 1);
+      rec->text[MAX_TEXT - 1] = '\0';
+      atomic_store_explicit(&rec->has_result, 1, memory_order_release);
+    }
   }
   // else {
   // printf("%s\n", speech_get_partial(rec));
@@ -29,7 +31,14 @@ void playback(ma_device *device, void *output, const void *input,
   Audio *ctx = (Audio *)device->pUserData;
 
   if (ctx->has_decoder) {
-    ma_decoder_read_pcm_frames(&ctx->decoder, output, frameCount, NULL);
+    ma_uint64 read = 0;
+    ma_decoder_read_pcm_frames(&ctx->decoder, output, frameCount, &read);
+    if (read < frameCount) {
+      ma_uint32 bpf = ma_get_bytes_per_frame(device->playback.format,
+                                             device->playback.channels);
+      memset((char *)output + read * bpf, 0, (frameCount - read) * bpf);
+      atomic_store(&ctx->finished, 1);
+    }
   } else {
     // Make silence
     memset(output, 0,

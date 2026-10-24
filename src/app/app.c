@@ -44,15 +44,26 @@ fail:
   return -1;
 }
 void app_update(App *app) {
+  if (app->playing) {
+    if (atomic_load(&app->playback->finished)) {
+      stop_device(app->playback);
+      start_device(app->capture, NULL);
+      app->playing = false;
+    }
+    return;
+  }
   SpeechContext *s = app->speech;
-  if (!s->has_result) return;
-  s->has_result = 0;
+  if (!atomic_load_explicit(&s->has_result, memory_order_acquire)) return;
 
-  char *result = parse_json(s->text);
+  char local[MAX_TEXT];
+  memcpy(local, s->text, MAX_TEXT);
+  atomic_store_explicit(&s->has_result, 0, memory_order_release);
+  char *result = parse_json(local);
   if (result && strcmp(result, "привет") == 0) {
     stop_device(app->capture);
+    atomic_store(&app->playback->finished, 0);
     start_device(app->playback, app->sound_path);
-    start_device(app->capture, NULL);
+    app->playing = true;
   }
   free(result);
 }

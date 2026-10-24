@@ -2,6 +2,7 @@
 #define STT_H
 
 #include <vosk_api.h>
+#include <stdatomic.h>
 
 #define MAX_TEXT 512
 
@@ -9,7 +10,7 @@ typedef struct {
   VoskModel *model;
   VoskRecognizer *recognizer;
   char text[MAX_TEXT];
-  int has_result;
+  atomic_int has_result;
 } SpeechContext;
 
 SpeechContext *create_speech(const char *model_path, int sample_rate);

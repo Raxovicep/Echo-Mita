@@ -22,8 +22,8 @@ SpeechContext *create_speech(const char *model_path, int sample_rate) {
     return NULL;
   }
 
-  ctx->text[0]    = '\0';
-  ctx->has_result = 0;
+  ctx->text[0] = '\0';
+  atomic_init(&ctx->has_result, 0);
 
   return ctx;
 }

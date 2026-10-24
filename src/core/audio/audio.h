@@ -2,6 +2,7 @@
 #define AUDIO_H
 
 #include "../../../ext/miniaudio.h"
+#include <stdatomic.h>
 
 typedef struct {
   ma_device device;
@@ -9,6 +10,7 @@ typedef struct {
   // TODO: use bit flags
   int status;
   int has_decoder;
+  atomic_int finished;
 } Audio;
 
 Audio *create_device(ma_device_type type, ma_format format,
