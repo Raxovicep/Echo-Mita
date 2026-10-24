@@ -47,8 +47,8 @@ const Source stb_libs[] = {
     {EXT "miniaudio.h", BUILD_FOLDER "miniaudio.o",
      "-DMINIAUDIO_IMPLEMENTATION"},
 };
-const Source libs[] = {{EXT "raylib/Linux-x86_64/include/raylib.h",
-                        EXT "raylib/Linux-x86_64/lib/", "-l:libraylib.a"},
+const Source libs[] = {/*{EXT "raylib/Linux-x86_64/include/raylib.h",EXT
+                          "raylib/Linux-x86_64/lib/", "-l:libraylib.a"},*/
                        {EXT "vosk/Linux-x86_64/include/vosk_api.h",
                         EXT "vosk/Linux-x86_64/lib/", "-l:libvosk.so"}};
 
@@ -335,7 +335,7 @@ bool link_program(Compiler compiler) {
                temp_sprintf("-L%s", libs[i].obj));
     cmd_append(&cmd, libs[i].macro);
   }
-  cmd_append(&cmd, "-ldl", "-lpthread", "-ljson-c", "-lm", "-lX11");
+  cmd_append(&cmd, "-ldl", "-lpthread", "-ljson-c", "-lm", "-lraylib");
 
   return cmd_run(&cmd);
 }
