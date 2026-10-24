@@ -56,7 +56,8 @@ const size_t sources_count  = sizeof(sources) / sizeof(sources[0]);
 const size_t stb_libs_count = sizeof(stb_libs) / sizeof(stb_libs[0]);
 const size_t libs_count     = sizeof(libs) / sizeof(libs[0]);
 
-bool dev = false;
+bool dev     = false;
+char *memory = NULL;
 
 bool set_compiler_by_name(const char *name, Compiler *compiler);
 void cc(Cmd *cmd, Compiler compiler);
@@ -86,6 +87,7 @@ int main(int argc, char **argv) {
   flag_bool_var(&no_build, "no-build", false, "Do not build a program");
   flag_bool_var(&force, "force", false, "Force build a program");
   flag_str_var(&compiler_name, "cc", "gcc", "Compiler to use");
+  flag_str_var(&memory, "mem", "address", "Switch sanitize address and thread");
 
   if (!flag_parse(argc, argv)) {
     usage(stderr);
@@ -159,7 +161,11 @@ void cc(Cmd *cmd, Compiler compiler) {
 void add_dev_flags(Cmd *cmd) {
   if (dev) {
     cmd_append(cmd, "-ggdb");
-    cmd_append(cmd, "-fsanitize=address");
+    if (strcmp(memory, "thread") == 0) {
+      cmd_append(cmd, "-fsanitize=thread");
+    } else {
+      cmd_append(cmd, "-fsanitize=address");
+    }
     cmd_append(cmd, "-fsanitize=undefined");
     cmd_append(cmd, "-fno-sanitize-recover=all");
     cmd_append(cmd, "-fsanitize=float-divide-by-zero");
